@@ -1,0 +1,40 @@
+@page
+@model Block4.Pages.CheckoutModel
+@{
+    ViewData["Title"] = "Afrekenen";
+}
+
+<div class="container" style="max-width: 600px;">
+    <h1 class="mb-4">Afrekenen</h1>
+
+    <form method="post">
+        <div class="mb-3">
+            <label asp-for="Input.Naam" class="form-label"></label>
+            <input asp-for="Input.Naam" class="form-control" placeholder="Jan Janssen" />
+            <span asp-validation-for="Input.Naam" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Adres" class="form-label"></label>
+            <input asp-for="Input.Adres" class="form-control" placeholder="Hoofdstraat 1, 6400 AA Heerlen" />
+            <span asp-validation-for="Input.Adres" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Betaalwijze" class="form-label"></label>
+            <select asp-for="Input.Betaalwijze" class="form-select">
+                <option value="">-- Kies betaalwijze --</option>
+                <option value="iDEAL">iDEAL</option>
+                <option value="Creditcard">Creditcard</option>
+                <option value="Bankoverschrijving">Bankoverschrijving</option>
+            </select>
+            <span asp-validation-for="Input.Betaalwijze" class="text-danger small"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Bestelling plaatsen</button>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
