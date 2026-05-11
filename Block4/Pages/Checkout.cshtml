@@ -4,37 +4,86 @@
     ViewData["Title"] = "Afrekenen";
 }
 
-<div class="container" style="max-width: 600px;">
-    <h1 class="mb-4">Afrekenen</h1>
+<style>
+    .checkout-page { max-width: 960px; margin: 0 auto; }
+    .checkout-page h1 { font-size: 2rem; font-weight: 700; margin-bottom: 2rem; }
+    .checkout-section { background: #fff; border: 1px solid #e5e5e5; border-radius: 4px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .checkout-section h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f0f0f0; }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item-name { font-weight: 500; }
+    .cart-item-qty { color: #666; font-size: 0.9rem; }
+    .cart-item-price { font-weight: 600; white-space: nowrap; }
+    .cart-total { display: flex; justify-content: space-between; padding-top: 1rem; border-top: 2px solid #000; font-weight: 700; font-size: 1.1rem; }
+    .btn-checkout { background: #000; color: #fff; border: none; padding: 0.875rem; width: 100%; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: background 0.2s; }
+    .btn-checkout:hover { background: #333; }
+    .checkout-form .form-label { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .checkout-form .form-control, .checkout-form .form-select { border: 1px solid #d0d0d0; border-radius: 4px; padding: 0.625rem 0.75rem; }
+    .checkout-form .form-control:focus, .checkout-form .form-select:focus { border-color: #000; box-shadow: none; }
+    .error-alert { background: #fff3f3; border: 1px solid #ffcdd2; color: #c62828; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem; display: none; }
+</style>
 
-    <form method="post">
-        <div class="mb-3">
-            <label asp-for="Input.Naam" class="form-label"></label>
-            <input asp-for="Input.Naam" class="form-control" placeholder="Jan Janssen" />
-            <span asp-validation-for="Input.Naam" class="text-danger small"></span>
+<div class="checkout-page">
+    <h1>Afrekenen</h1>
+
+    <div id="checkout-error" class="error-alert"></div>
+
+    <div class="row">
+        <div class="col-md-7">
+            <div class="checkout-section">
+                <h2>Gegevens</h2>
+                <form method="post" id="checkout-form" class="checkout-form">
+                    <div class="mb-3">
+                        <label asp-for="Input.Naam" class="form-label"></label>
+                        <input asp-for="Input.Naam" class="form-control" placeholder="Jan Janssen" />
+                        <span asp-validation-for="Input.Naam" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Adres" class="form-label"></label>
+                        <input asp-for="Input.Adres" class="form-control" placeholder="Hoofdstraat 1, 6400 AA Heerlen" />
+                        <span asp-validation-for="Input.Adres" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Betaalwijze" class="form-label"></label>
+                        <select asp-for="Input.Betaalwijze" class="form-select">
+                            <option value="">-- Kies betaalwijze --</option>
+                            <option value="iDEAL">iDEAL</option>
+                            <option value="Creditcard">Creditcard</option>
+                            <option value="Bankoverschrijving">Bankoverschrijving</option>
+                        </select>
+                        <span asp-validation-for="Input.Betaalwijze" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn-checkout">Bestelling plaatsen</button>
+                </form>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label asp-for="Input.Adres" class="form-label"></label>
-            <input asp-for="Input.Adres" class="form-control" placeholder="Hoofdstraat 1, 6400 AA Heerlen" />
-            <span asp-validation-for="Input.Adres" class="text-danger small"></span>
+        <div class="col-md-5">
+            <div class="checkout-section">
+                <h2>Overzicht</h2>
+                @foreach (var item in Model.CartItems)
+                {
+                    <div class="cart-item">
+                        <div>
+                            <div class="cart-item-name">@item.ProductName</div>
+                            <div class="cart-item-qty">Aantal: @item.Quantity</div>
+                        </div>
+                        <div class="cart-item-price">€ @((item.Price * item.Quantity).ToString("F2"))</div>
+                    </div>
+                }
+                <div class="cart-total">
+                    <span>Totaal</span>
+                    <span>€ @Model.Total.ToString("F2")</span>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label asp-for="Input.Betaalwijze" class="form-label"></label>
-            <select asp-for="Input.Betaalwijze" class="form-select">
-                <option value="">-- Kies betaalwijze --</option>
-                <option value="iDEAL">iDEAL</option>
-                <option value="Creditcard">Creditcard</option>
-                <option value="Bankoverschrijving">Bankoverschrijving</option>
-            </select>
-            <span asp-validation-for="Input.Betaalwijze" class="text-danger small"></span>
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100">Bestelling plaatsen</button>
-    </form>
+    </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/checkout.js" asp-append-version="true"></script>
 }
