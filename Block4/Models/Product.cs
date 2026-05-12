@@ -5,22 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.Models
+namespace Block4.Models
 {
-    public class Customer
-    {
-        [Key]
-        [Required]
+    public class Product
+    {        
         public int Id { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
-        [Required]
-        public string Address { get; set; }
+        public string Description { get; set; }
 
-        public bool Active { get; set; }
+        public decimal Price { get; set; }
 
         public ICollection<Order> Orders { get; } = new List<Order>();
+
+        public ICollection<Part> Parts { get; } = new List<Part>();
     }
 }
