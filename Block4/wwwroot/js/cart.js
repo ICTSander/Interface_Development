@@ -6,12 +6,20 @@ let cartContainerIsOpen = false;
 document.addEventListener('DOMContentLoaded', () => {
 
     const cartImg = document.querySelector('.cart-img-container');
+    const cartItemsContainer = document.querySelector('.cart-items-container');
+
 
     cartImg.addEventListener('click', () => toggleCartConatiner())
 
+    // initial change ( does it only once at page load )
     setAmoutofCart()
-
     hideBuyButtonIfNoItems()
+
+    // update live changes
+    cartItemsContainer.addEventListener('change', () => {
+        setAmoutofCart()
+        hideBuyButtonIfNoItems()
+    });
 })
 
 
