@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="DataAccessLayer\DataAccessLayer.csproj" />
+    <Folder Include="DataAccessLayer\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.26" />
   </ItemGroup>
 
 </Project>

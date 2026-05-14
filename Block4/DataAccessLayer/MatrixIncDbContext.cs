@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Models;
+﻿using Block4.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer
