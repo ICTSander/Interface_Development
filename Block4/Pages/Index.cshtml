@@ -23,12 +23,12 @@
     {
         <div class="cart-item-conainer">
             <img src="@item.imgPath" alt="product"/>
-            <div class="cart-item-title">@item.title</div>
-            <div class="cart-item-price">€@item.price</div>
+            <div class="cart-item-title">@item.Product.Name</div>
+            <div class="cart-item-price">€@item.Price</div>
             <div class="change-item-amount-container">
-                <button type="button" asp-action="cart-item-amount-reduce" data-id="@item.id">-</button>
-                <div class="cart-item-amount-text">@item.amount</div>
-                <button type="button" asp-action="cart-item-amount-add" data-id="@item.id">+</button>
+                <button type="button" asp-action="cart-item-amount-reduce" data-id="@item.ProductId">-</button>
+                <div class="cart-item-amount-text">@item.Quantity</div>
+                <button type="button" asp-action="cart-item-amount-add" data-id="@item.ProductId">+</button>
             </div>
             <button type="button" asp-action="cart-item-remove" class="cart-item-removeBtn">
                 <img class="cart-item-remove-img" src="@Model.removeImg" alt="X"/>

@@ -1,16 +1,20 @@
 ﻿/* CART SECTION */
 .cart-section {
+    position: absolute;
     width: 100%;
+    right: 0;
+    top: 0;
     max-width: 430px;
     margin: 0 auto;
     background: #f7f7f7;
     min-height: 100vh;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: space-between;
     font-family: Arial, Helvetica, sans-serif;
     padding: 20px 22px;
     box-sizing: border-box;
+    transition: all ease 0.2s;
 }
 
 /* SHIPPING */
