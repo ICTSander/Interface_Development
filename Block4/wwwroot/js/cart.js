@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     cartImg.addEventListener('click', () => toggleCartConatiner())
 
     setAmoutofCart()
+
+    hideBuyButtonIfNoItems()
 })
 
 
@@ -58,4 +60,11 @@ function setAmoutofCart() {
     const cartItemAmmountValue = document.querySelectorAll('.cart-item-conainer').length;
     // set ammount inside cartCounter
     cartCounter.textContent = cartItemAmmountValue || defaultCounterValue;
+}
+function hideBuyButtonIfNoItems() {
+    const buyContainer = document.querySelector('.cart-item-paying-Container');
+
+    const cartItemAmmountValue = document.querySelectorAll('.cart-item-conainer').length;
+
+    buyContainer.style.display = cartItemAmmountValue >= 1 ? 'block' : 'none';
 }
