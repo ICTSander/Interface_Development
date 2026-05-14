@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartImg = document.querySelector('.cart-img-container');
 
     cartImg.addEventListener('click', () => toggleCartConatiner())
+
+    setAmoutofCart()
 })
 
 
@@ -24,20 +26,36 @@ function toggleCartConatiner() {
 }
 
 function openCartContainer() {
-    const cartSectionContainer = document.querySelector < HTMLDivElement > ('.cart-section');
+    const cartSectionContainer = document.querySelector('.cart-section');
 
-    cartSectionContainer.style.display = 'flex';
     // make the position far to the right to get the animations right
     // #JS quirk
     cartSectionContainer.style.right = '-500px';
-    setTimeout(cartSectionContainer.style.right = '0px', 1);
-
+    cartSectionContainer.style.display = 'flex';
+    // set a timer of 1 sec to set the position back to 0 to get a total animation time of 0.5 with 0.5 sec buffer
+    setTimeout( () => {
+        cartSectionContainer.style.right = '0px';
+    }, 1);
 }
 function closeCartContainer() {
-    const cartSectionContainer = document.querySelector<HTMLDivElement>('.cart-section');
+    const cartSectionContainer = document.querySelector('.cart-section');
 
-    cartSectionContainer.style.display = 'none';
     // make the position far to the right to get the animations right
     // #JS quirk
-    cartSectionContainer.style.right = '-500px';
+    cartSectionContainer.style.right = '-500px'
+    // set a timer of 1 sec to set the position back to 0 to get a total animation time of 0.5 with 0.5 sec buffer
+    setTimeout(() => {
+        cartSectionContainer.style.display = 'none';
+    }, 1);   
+}
+
+function setAmoutofCart() {
+    const cartCounter = document.querySelector('#cart-counter');
+
+    const defaultCounterValue = ""; // empty
+
+    // get how many objects are inside cart
+    const cartItemAmmountValue = document.querySelectorAll('.cart-item-conainer').length;
+    // set ammount inside cartCounter
+    cartCounter.textContent = cartItemAmmountValue || defaultCounterValue;
 }
