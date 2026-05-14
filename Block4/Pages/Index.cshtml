@@ -7,3 +7,45 @@
 <div class="text-center">
     <h1 class="display-4">Denktank</h1>
 </div>
+
+
+
+
+<section class="cart-section" id="cartSectionContainer">
+    <div class="shippingCostContainer">
+        <img src="./" alt="package icon"/>
+        <p id="shippingCost-text"></p>
+        <div id="shippingCost-progressBarContainer">
+            <div id="shippingCost-progressBar"></div>
+        </div>
+    </div>
+    @foreach (var item in Model.CartItems)
+    {
+        <div class="cart-item-conainer">
+            <img src="@item.imgPath" alt="product"/>
+            <div class="cart-item-title">@item.title</div>
+            <div class="cart-item-price">€@item.price</div>
+            <div class="change-item-amount-container">
+                <button type="button" asp-action="cart-item-amount-reduce" data-id="@item.id">-</button>
+                <div class="cart-item-amount-text">@item.amount</div>
+                <button type="button" asp-action="cart-item-amount-add" data-id="@item.id">+</button>
+            </div>
+            <button type="button" asp-action="cart-item-remove" class="cart-item-removeBtn">
+                <img class="cart-item-remove-img" src="@Model.removeImg" alt="X"/>
+            </button>
+        </div>
+    }
+    <div class="cart-item-paying-Container">
+        <div class="cart-item-paying-subtotal-container">
+            <div class="cart-item-paying-subtotal-text">Subtotaal</div>
+            <div class="cart-item-paying-subtotal-value">@Model.cartSubtotal</div>
+        </div>
+        <div class="cart-item-paying-shippingCost-container">
+            <div class="cart-item-paying-shippingCost-text">Verzendkosten</div>
+            <div class="cart-item-paying-shippingCost-value">@Model.cartShippingCost</div>
+        </div>
+        <hr />
+        <div class="cart-item-paying-total">Totaal</div>
+        <button type="button" class="cart-item-buyBtn" asp-action="cart-item-buy">Afrekenen</button>
+    </div>
+</section>
