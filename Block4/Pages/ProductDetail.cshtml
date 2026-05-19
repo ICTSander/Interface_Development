@@ -1,0 +1,74 @@
+﻿@page
+@model Block4.Pages.ProductDetailModel
+@{
+    ViewData["Title"] = "Product Page";
+}
+
+<!-- CONTENT -->
+<main class="container">
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <a asp-page="./Index">Home</a>
+        <span>›</span>
+        <p> @Model.Product.Name</p>
+    </div>
+
+    <!-- PRODUCT SECTION -->
+    <section class="product-section">
+
+        <!-- IMAGE -->
+        <div class="product-image">
+            <img src="~/img/placeholder.svg">
+        </div>
+
+        <!-- INFO -->
+        <form method="post" class="product-info">
+
+            <h1 asp-for="Name">@Model.Product.Name</h1>
+
+            <div class="price-row">
+                <h2 asp-for="Price">€@Model.Product.Price</h2>
+            </div>
+
+            <div class="description">
+                <h3>Beschrijving</h3>
+                <p asp-for="Description">@Model.Product.Description</p>
+            </div>
+
+            <hr>
+
+            <!-- SIZES -->
+            <div class="sizes">
+                <h3>Maat selecteren</h3>
+
+                <div class="size-buttons">
+                    <button>XS</button>
+                    <button>S</button>
+                    <button class="active">M</button>
+                    <button>L</button>
+                    <button>XL</button>
+                </div>
+            </div>
+
+            <!-- QUANTITY -->
+            <div class="quantity-section">
+                <h3>Aantal</h3>
+
+                <div class="quantity-box">
+                    <button>-</button>
+                    <span>1</span>
+                    <button>+</button>
+                </div>
+            </div>
+
+            <!-- BUTTON -->
+            <button type="submit" class="cart-btn">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Voeg toe aan winkelwagen
+            </button>
+
+        </form>
+    </section>
+
+</main>
