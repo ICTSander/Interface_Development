@@ -2,13 +2,15 @@
 
 namespace Block4.Models
 {
-    public class CartItem(Product product, int _quantity, string? img)
+    public class CartItem(Product product, int quantity, string? img)
     {
-        public int Quantity { private set; get; } = _quantity;
+        public int Quantity { private set; get; } = quantity;
 
         public string? ImgPath { set; get; } = img ?? "./ErrorNotFound";
 
         public required Product Product { set; get; } = product;
+
+        public decimal LineTotal => Product.Price * Quantity;
 
         public void ChangeQuantity(int newQuantity)
         {

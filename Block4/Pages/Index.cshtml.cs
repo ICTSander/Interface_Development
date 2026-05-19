@@ -7,117 +7,33 @@ using System.Text.Json;
 
 namespace Block4.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel(IProductRepository productRepository) : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
 
-        // Data Access layer
-        private readonly IProductRepository _productRepository;
-
-
-
-
-
-        // cart
-        [BindProperty]
-        public required string CartItemCartSubtotal { get; set; }
-        [BindProperty]
-        public required string CarItemShippingCost { get; set; }
+        private readonly IProductRepository _productRepository = productRepository;
 
         public required IList<Product> products;
-        public required List<CartItem> CartItems;
-        public required decimal ShippingCost;
-        public required decimal CartSubtotal;
-        public required string removeImg = setCartItemRemmoveImagePath();
-        public IndexModel(ILogger<IndexModel> logger, IProductRepository productRepository)
-        {
-            _logger = logger;
-            _productRepository = productRepository;
-            products = new List<Product>();
-            // cart - items
-            CartItems = new List<CartItem>();
-        }
 
         public void OnGet()
         {
-            products = _productRepository.GetAllProducts().ToList();
+            products = new List<Product>();
+            // Test: Add a dummy cart item to session
+            // List<CartItem> testCart = new();
 
-            // cart
-            LoadCart();
-            ShippingCost = getShippingCost();
-            CartSubtotal = getCartSubtotal();
-        }
-
-        public IActionResult? OnPost()
-        {
-            if (!ModelState.IsValid)
-            {
-                // ga terug zonder iets te sturen
-                return BadRequest(ModelState);
-                
-            }
-            // Load cart from session
-            LoadCart();
-
-            // Create order data with all cart information
-            var orderData = new
-            {
-                Subtotal = CartSubtotal,
-                ShippingCost = ShippingCost,
-                Total = CartSubtotal + ShippingCost,
-                Items = CartItems.Select(item => new
+            // Test: Add a dummy cart item to session
+            var testCart = new List<CartItem>
                 {
-                    ProductId = item.Product.Id,
-                    ProductName = item.Product.Name,
-                    Price = item.Product.Price,
-                    Quantity = item.Quantity,
-                    ImagePath = item.ImgPath,
-                    LineTotal = item.Product.Price * item.Quantity
-                }).ToList()
-            };
+                    new CartItem
+                    {
+                        Product = products[0],
+                        Quantity = 2,
+                        ImgPath = "/images/test.jpg"
+                    }
+                };
 
-            // Save to session or pass to checkout
-            HttpContext.Session.SetString("OrderData", JsonSerializer.Serialize(orderData));
-
-            // Log for debugging
-            _logger.LogInformation($"Order created: {orderData.Items.Count} items, Total: €{orderData.Total}");
-
-            // Redirect to checkout page
-            return RedirectToPage("/Checkout");
-        }
-
-        private void LoadCart()
-        {
-            var cartJson = HttpContext.Session.GetString("Cart");
-            if (!string.IsNullOrEmpty(cartJson))
-            {
-                CartItems = JsonSerializer.Deserialize<List<CartItem>>(cartJson) ?? new List<CartItem>();
-            }
-        }
-        // helpers
-        private static decimal getShippingCost()
-        {
-            // default is 0;
-            decimal shippingCost = 0;
-            return shippingCost;
-        }
-        private decimal getCartSubtotal()
-        {
-            decimal cartSubtotal = 0;
-            foreach (var cart in CartItems)
-            {
-                int quatity = cart.Quantity;
-                decimal price = cart.Product.Price;
-                cartSubtotal += price * quatity;
-            }
-
-            return cartSubtotal;
-        }
-        private static string setCartItemRemmoveImagePath()
-        {
-            // TODO: edit the path to the image when image exist
-            string removeImg = "./notFound";
-            return removeImg;
+            var cartJson = JsonSerializer.Serialize(testCart);
+            HttpContext.Session.SetString("Cart", cartJson);
         }
     }
 }
