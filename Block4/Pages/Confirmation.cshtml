@@ -4,23 +4,9 @@
     ViewData["Title"] = "Bevestiging";
 }
 
-<style>
-    .confirmation-page { max-width: 640px; margin: 0 auto; text-align: center; }
-    .confirmation-page h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .confirmation-subtitle { color: #666; margin-bottom: 2rem; }
-    .confirmation-section { background: #fff; border: 1px solid #e5e5e5; border-radius: 4px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: left; }
-    .confirmation-section h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
-    .detail-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #f0f0f0; }
-    .detail-row:last-child { border-bottom: none; }
-    .detail-label { color: #666; }
-    .detail-value { font-weight: 500; }
-    .order-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #f0f0f0; }
-    .order-item:last-child { border-bottom: none; }
-    .order-total { display: flex; justify-content: space-between; padding-top: 0.75rem; border-top: 2px solid #000; font-weight: 700; font-size: 1.1rem; }
-    .btn-home { background: #000; color: #fff; border: none; padding: 0.875rem 2rem; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; text-decoration: none; display: inline-block; transition: background 0.2s; }
-    .btn-home:hover { background: #333; color: #fff; }
-    .checkmark { font-size: 3rem; margin-bottom: 1rem; }
-</style>
+@section Styles {
+    <link rel="stylesheet" href="~/css/confirmation.css" asp-append-version="true" />
+}
 
 <div class="confirmation-page">
     <div class="checkmark">✓</div>
@@ -50,13 +36,13 @@
             @foreach (var item in Model.CartItems)
             {
                 <div class="order-item">
-                    <span>@item.ProductName <span style="color:#666;">×@item.Quantity</span></span>
-                    <span style="font-weight:600;">€ @((item.Price * item.Quantity).ToString("F2"))</span>
+                    <span>@item.ProductName <span class="order-item-qty">×@item.Quantity</span></span>
+                    <span class="order-item-price">€ @((item.Price * item.Quantity).ToString("F2"))</span>
                 </div>
             }
             <div class="order-total">
                 <span>Totaal</span>
-                <span>€ @Model.Total</span>
+                <span>€ @Model.Total.ToString("F2")</span>
             </div>
         </div>
     }
