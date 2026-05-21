@@ -19,7 +19,7 @@
 
         <!-- IMAGE -->
         <div class="product-image">
-            <img src="~/img/placeholder.svg">
+            <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name">
         </div>
 
         <!-- INFO -->
@@ -38,17 +38,10 @@
 
             <hr>
 
-            <!-- SIZES -->
-            <div class="sizes">
-                <h3>Maat selecteren</h3>
-
-                <div class="size-buttons">
-                    <button>XS</button>
-                    <button>S</button>
-                    <button class="active">M</button>
-                    <button>L</button>
-                    <button>XL</button>
-                </div>
+            <!-- CATEGORY -->
+            <div class="category">
+                <h3>Categorie</h3>
+                <p asp-for="Category">@Model.Product.Category</p>
             </div>
 
             <!-- QUANTITY -->
