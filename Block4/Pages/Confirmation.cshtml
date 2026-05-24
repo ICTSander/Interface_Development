@@ -1,0 +1,51 @@
+@page
+@model Block4.Pages.ConfirmationModel
+@{
+    ViewData["Title"] = "Bevestiging";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/confirmation.css" asp-append-version="true" />
+}
+
+<div class="confirmation-page">
+    <div class="checkmark">✓</div>
+    <h1>Bedankt voor je bestelling</h1>
+    <p class="confirmation-subtitle">Je bestelling is ontvangen en wordt verwerkt.</p>
+
+    <div class="confirmation-section">
+        <h2>Bestelgegevens</h2>
+        <div class="detail-row">
+            <span class="detail-label">Naam</span>
+            <span class="detail-value">@Model.Naam</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Bezorgadres</span>
+            <span class="detail-value">@Model.Adres</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Betaalwijze</span>
+            <span class="detail-value">@Model.Betaalwijze</span>
+        </div>
+    </div>
+
+    @if (Model.CartItems.Any())
+    {
+        <div class="confirmation-section">
+            <h2>Bestelde producten</h2>
+            @foreach (var item in Model.CartItems)
+            {
+                <div class="order-item">
+                    <span>@item.ProductName <span class="order-item-qty">×@item.Quantity</span></span>
+                    <span class="order-item-price">€ @((item.Price * item.Quantity).ToString("F2"))</span>
+                </div>
+            }
+            <div class="order-total">
+                <span>Totaal</span>
+                <span>€ @Model.Total.ToString("F2")</span>
+            </div>
+        </div>
+    }
+
+    <a asp-page="/Index" class="btn-home">Verder winkelen</a>
+</div>

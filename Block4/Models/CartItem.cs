@@ -1,23 +1,11 @@
-﻿using Microsoft.IdentityModel.Tokens;
-
 namespace Block4.Models
 {
-    public class CartItem(Product product, int quantity, string? img)
+    public class CartItem
     {
-        public int Quantity { private set; get; } = quantity;
-
-        public string? ImgPath { set; get; } = img ?? "./ErrorNotFound";
-
-        public required Product Product { set; get; } = product;
-
-        public decimal LineTotal => Product.Price * Quantity;
-
-        public void ChangeQuantity(int newQuantity)
-        {
-            if (newQuantity >= 0)
-            {
-                Quantity = newQuantity;
-            }
-        }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
     }
 }

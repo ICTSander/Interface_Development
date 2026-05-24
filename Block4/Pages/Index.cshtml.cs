@@ -1,6 +1,5 @@
 using Block4.Models;
 using DataAccessLayer.Interfaces;
-using DataAccessLayer.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
@@ -9,31 +8,30 @@ namespace Block4.Pages
 {
     public class IndexModel(IProductRepository productRepository) : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-
         private readonly IProductRepository _productRepository = productRepository;
 
-        public required IList<Product> products;
+        public IList<Product> Products { get; set; } = new List<Product>();
 
         public void OnGet()
         {
-            products = new List<Product>();
-            // Test: Add a dummy cart item to session
-            // List<CartItem> testCart = new();
+            Products = _productRepository.GetAllProducts().ToList();
+        }
 
-            // Test: Add a dummy cart item to session
-            var testCart = new List<CartItem>
-                {
-                    new CartItem
-                    {
-                        Product = products[0],
-                        Quantity = 2,
-                        ImgPath = "/images/test.jpg"
-                    }
-                };
+        public IActionResult OnPostAddToCart(int productId, string productName, decimal price, string imageUrl)
+        {
+            var cartJson = HttpContext.Session.GetString("Cart");
+            var cart = string.IsNullOrEmpty(cartJson)
+                ? new List<CartItem>()
+                : JsonSerializer.Deserialize<List<CartItem>>(cartJson) ?? new List<CartItem>();
 
-            var cartJson = JsonSerializer.Serialize(testCart);
-            HttpContext.Session.SetString("Cart", cartJson);
+            var existing = cart.FirstOrDefault(c => c.ProductId == productId);
+            if (existing != null)
+                existing.Quantity++;
+            else
+                cart.Add(new CartItem { ProductId = productId, ProductName = productName, Price = price, Quantity = 1, ImageUrl = imageUrl });
+
+            HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cart));
+            return RedirectToPage();
         }
     }
 }

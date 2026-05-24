@@ -1,0 +1,74 @@
+@page
+@model Block4.Pages.CheckoutModel
+@{
+    ViewData["Title"] = "Afrekenen";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/checkout.css" asp-append-version="true" />
+}
+
+<div class="checkout-page">
+    <h1>Afrekenen</h1>
+
+    <div id="checkout-error" class="error-alert"></div>
+
+    <div class="row">
+        <div class="col-md-7">
+            <div class="checkout-section">
+                <h2>Gegevens</h2>
+                <form method="post" id="checkout-form" class="checkout-form">
+                    <div class="mb-3">
+                        <label asp-for="Input.Naam" class="form-label"></label>
+                        <input asp-for="Input.Naam" class="form-control" placeholder="Jan Janssen" />
+                        <span asp-validation-for="Input.Naam" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Adres" class="form-label"></label>
+                        <input asp-for="Input.Adres" class="form-control" placeholder="Hoofdstraat 1, 6400 AA Heerlen" />
+                        <span asp-validation-for="Input.Adres" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Betaalwijze" class="form-label"></label>
+                        <select asp-for="Input.Betaalwijze" class="form-select">
+                            <option value="">-- Kies betaalwijze --</option>
+                            <option value="iDEAL">iDEAL</option>
+                            <option value="Creditcard">Creditcard</option>
+                            <option value="Bankoverschrijving">Bankoverschrijving</option>
+                        </select>
+                        <span asp-validation-for="Input.Betaalwijze" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn-checkout">Bestelling plaatsen</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="checkout-section">
+                <h2>Overzicht</h2>
+                @foreach (var item in Model.CartItems)
+                {
+                    <div class="cart-item">
+                        <div>
+                            <div class="cart-item-name">@item.ProductName</div>
+                            <div class="cart-item-qty">Aantal: @item.Quantity</div>
+                        </div>
+                        <div class="cart-item-price">€ @((item.Price * item.Quantity).ToString("F2"))</div>
+                    </div>
+                }
+                <div class="cart-total">
+                    <span>Totaal</span>
+                    <span>€ @Model.Total.ToString("F2")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/checkout.js" asp-append-version="true"></script>
+}

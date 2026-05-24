@@ -1,14 +1,9 @@
-﻿@page
+@page
 @model Block4.Models.CartSummaryView
-@{
-}
-
-
-
 
 <section class="cart-section" id="cartSectionContainer">
     <div class="shippingCostContainer">
-        <img src="./" alt="package icon" />
+        <img src="/img/package.png" alt="package icon" />
         <p id="shippingCost-text"></p>
         <div id="shippingCost-progressBarContainer">
             <div id="shippingCost-progressBar"></div>
@@ -24,15 +19,15 @@
             @foreach (var item in Model.CartItems)
             {
                 <div class="cart-item-conainer">
-                    <img src="@item.ImgPath" alt="product" />
-                    <div class="cart-item-title">@item.Product.Name</div>
-                    <div class="cart-item-price">€@item.Product.Price</div>
+                    <img src="@item.ImageUrl" alt="product" />
+                    <div class="cart-item-title">@item.ProductName</div>
+                    <div class="cart-item-price">€@item.Price.ToString("F2")</div>
                     <div class="change-item-amount-container">
-                        <button type="button" asp-for="cart-item-amount-reduce" data-id="@item.Product.Id">-</button>
+                        <button type="button" class="cart-item-amount-reduce" data-id="@item.ProductId">-</button>
                         <div class="cart-item-amount-text">@item.Quantity</div>
-                        <button type="button" asp-for="cart-item-amount-add" data-id="@item.Product.Id">+</button>
+                        <button type="button" class="cart-item-amount-add" data-id="@item.ProductId">+</button>
                     </div>
-                    <button type="button" asp-for="cart-item-remove" class="cart-item-removeBtn">
+                    <button type="button" class="cart-item-removeBtn" data-id="@item.ProductId">
                         <img class="cart-item-remove-img" src="@Model.RemoveImg" alt="X" />
                     </button>
                 </div>
@@ -42,14 +37,14 @@
     <form method="post" class="cart-item-paying-Container">
         <div class="cart-item-paying-subtotal-container">
             <div class="cart-item-paying-subtotal-text">Subtotaal</div>
-            <div class="cart-item-paying-subtotal-value" asp-for="cartItemCartSubtotal">@Model.Subtotal</div>
+            <div class="cart-item-paying-subtotal-value">€@Model.Subtotal.ToString("F2")</div>
         </div>
         <div class="cart-item-paying-shippingCost-container">
             <div class="cart-item-paying-shippingCost-text">Verzendkosten</div>
-            <div class="cart-item-paying-shippingCost-value" asp-for="carItemShippingCost">@Model.ShippingCost</div>
+            <div class="cart-item-paying-shippingCost-value">€@Model.ShippingCost.ToString("F2")</div>
         </div>
         <hr />
-        <div class="cart-item-paying-total">Totaal</div>
-        <button type="submit" class="cart-item-buyBtn">Afrekenen</button>
+        <div class="cart-item-paying-total">Totaal: €@Model.Total.ToString("F2")</div>
+        <a href="/Checkout" class="cart-item-buyBtn">Afrekenen</a>
     </form>
 </section>
