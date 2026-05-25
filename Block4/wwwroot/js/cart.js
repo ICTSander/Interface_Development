@@ -6,8 +6,10 @@ let cartContainerIsOpen = false;
 document.addEventListener('DOMContentLoaded', () => {
 
     const cartImg = document.querySelector('.cart-img-container');
-    const cartItemsContainer = document.querySelector('.cart-items-container');
-
+    const cartItemsContainer = document.querySelectorAll('.cart-items-container');
+    const cartItemsRemoveBtn = document.querySelectorAll('.cart-item-removeBtn');
+    const allcartAmountAddBtn = document.querySelectorAll('.cart-item-amount-add');
+    const allcartAmountReduceBtn = document.querySelectorAll('.cart-item-amount-reduce')
 
     cartImg.addEventListener('click', () => toggleCartConatiner())
 
@@ -15,11 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
     setAmoutofCart()
     hideBuyButtonIfNoItems()
 
+    for (const cartAmountAddBtn of allcartAmountAddBtn) cartAmountAddBtn.addEventListener('click', (e) => addAantal(e));
+    for (const cartAmountReduceBtn of allcartAmountReduceBtn) cartAmountReduceBtn.addEventListener('click', (e) => removeAantal(e));
+
     // update live changes
-    cartItemsContainer.addEventListener('change', () => {
-        setAmoutofCart()
-        hideBuyButtonIfNoItems()
-    });
+    for (const cartItemContainer of cartItemsContainer) {
+
+        cartItemContainer.addEventListener('change', () => {
+            setAmoutofCart()
+            hideBuyButtonIfNoItems()
+        });
+    }
+
+    // remove parent
+    for (const cartItemRemoveBtn of cartItemsRemoveBtn) {
+        cartItemRemoveBtn.addEventListener('click', (e) => removeCartItem(e));
+    }
 })
 
 
@@ -75,4 +88,36 @@ function hideBuyButtonIfNoItems() {
     const cartItemAmmountValue = document.querySelectorAll('.cart-item-conainer').length;
 
     buyContainer.style.display = cartItemAmmountValue >= 1 ? 'block' : 'none';
+}
+
+function removeCartItem(e) {
+    // get parent
+    const target = e.target;
+    const parent = target.parentNode;
+    const grandParent = parent.parentNode;
+
+    // remove parent
+    grandParent.remove();
+    // reload
+    setAmoutofCart()
+    hideBuyButtonIfNoItems()
+}
+function removeAantal(e) {
+    const target = e.target;
+    const parent = target.parentNode;
+    const textNode = parent.querySelector('.cart-item-amount-text');
+    const originalNumber = Number.parseFloat(textNode.textContent);
+    const newNumber = originalNumber - 1;
+    if (newNumber <= 0) {
+        removeCartItem(e);
+    }
+    textNode.textContent = newNumber;
+}
+function addAantal(e) {
+    const target = e.target;
+    const parent = target.parentNode;
+    const textNode = parent.querySelector('.cart-item-amount-text');
+    const originalNumber = Number.parseFloat(textNode.textContent);
+    const newNumber = originalNumber + 1;
+    textNode.textContent = newNumber;
 }

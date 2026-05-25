@@ -3,11 +3,12 @@
     position: absolute;
     width: 100%;
     right: 0;
-    /* top: 0; */
+    top: 60px;
     max-width: 430px;
     margin: 0 auto;
     background: #f7f7f7;
-    min-height: 100vh;
+    /* min-height: 100vh; */
+    height: 900px;
     display: none;
     flex-direction: column;
     justify-content: space-between;
@@ -178,6 +179,9 @@
     font-weight: 500;
     cursor: pointer;
     transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cart-item-buyBtn:hover {
