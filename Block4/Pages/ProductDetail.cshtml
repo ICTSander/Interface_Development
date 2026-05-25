@@ -1,0 +1,56 @@
+﻿@page
+@model Block4.Pages.ProductDetailModel
+@{
+    ViewData["Title"] = "Product Page";
+}
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a asp-page="./Index">Home</a>
+        <span>›</span>
+        <p>@Model.Product.Name</p>
+    </div>
+
+    <section class="product-section">
+
+        <div class="product-image">
+            <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name">
+        </div>
+
+        <form method="post" class="product-info" asp-page-handler="AddToCart">
+
+            <input type="hidden" name="productId" value="@Model.Product.Id" />
+            <input type="hidden" name="productName" value="@Model.Product.Name" />
+            <input type="hidden" name="price" value="@Model.Product.Price" />
+            <input type="hidden" name="category" value="@Model.Product.Category" />
+            <input type="hidden" name="imageUrl" value="@Model.Product.ImageUrl" />
+
+            <h1 asp-for="Name">@Model.Product.Name</h1>
+
+            <div class="price-row">
+                <h2 asp-for="Price">€@Model.Product.Price</h2>
+            </div>
+
+            <div class="description">
+                <h3>Beschrijving</h3>
+                <p asp-for="Description">@Model.Product.Description</p>
+            </div>
+
+            <hr>
+
+            <div class="category">
+                <h3>Categorie</h3>
+                <p asp-for="Category">@Model.Product.Category</p>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Voeg toe aan winkelwagen
+            </button>
+
+        </form>
+
+    </section>
+
+</main>

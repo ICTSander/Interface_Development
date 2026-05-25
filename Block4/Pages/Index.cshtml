@@ -11,23 +11,14 @@
         {
             <div class="col">
                 <div class="card h-100">
-                    @if (!string.IsNullOrEmpty(product.ImageUrl))
-                    {
-                        <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="height:200px;object-fit:cover;" />
-                    }
+                    <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" />
                     <div class="card-body">
                         <h5 class="card-title">@product.Name</h5>
                         <p class="card-text text-muted">@product.Description</p>
-                        <p class="card-text fw-bold">€@product.Price.ToString("F2")</p>
+                        <p class="card-text fw-bold">€@product.Price</p>
                     </div>
                     <div class="card-footer">
-                        <form method="post" asp-page-handler="AddToCart">
-                            <input type="hidden" name="productId" value="@product.Id" />
-                            <input type="hidden" name="productName" value="@product.Name" />
-                            <input type="hidden" name="price" value="@product.Price" />
-                            <input type="hidden" name="imageUrl" value="@product.ImageUrl" />
-                            <button type="submit" class="btn btn-primary w-100">In winkelwagen</button>
-                        </form>
+                        <a asp-page="./ProductDetail" asp-route-id="@product.Id">View Details</a>
                     </div>
                 </div>
             </div>
