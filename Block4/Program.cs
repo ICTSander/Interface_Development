@@ -1,4 +1,3 @@
-using Block4.Services;
 using DataAccessLayer;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Repositories;
@@ -13,7 +12,6 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IPartRepository, PartRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddSingleton<ProductService>();
 builder.Services.AddDbContext<MatrixIncDbContext>(options =>
     options.UseInMemoryDatabase("MatrixIncDatabase"));
 
