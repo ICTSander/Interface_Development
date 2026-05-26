@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Webshop</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-top">
+            <div class="logo">
+                <a href="/">DenkTank Webshop</a>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" placeholder="Zoeken..." />
+            </div>
+
+            <div class="actions">
+                <a href="/Cart" class="cart">
+                    🛒 <span id="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+
+        <nav class="category-nav">
+            <a href="/Products?cat=dames">Dames</a>
+            <a href="/Products?cat=heren">Heren</a>
+            <a href="/Products?cat=kinderen">Kinderen</a>
+            <a href="/Products?cat=outlet">Outlet</a>
+            <a href="/Products?cat=nieuw">Nieuw</a>
+        </nav>
+    </header>
+
+    <main class="content">
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 - DenkTank Webshop</p>
+    </footer>
+
+</body>
+</html>

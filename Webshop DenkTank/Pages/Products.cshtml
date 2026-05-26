@@ -1,0 +1,46 @@
+﻿@page
+@model ProductsModel
+@{
+    ViewData["Title"] = "Producten";
+}
+
+<h1>Producten</h1>
+
+<!-- FILTERS -->
+<div class="filters">
+    <input type="text" id="search" placeholder="Zoeken..." />
+    <select id="sort">
+        <option value="price-asc">Prijs: laag → hoog</option>
+        <option value="price-desc">Prijs: hoog → laag</option>
+    </select>
+</div>
+
+<!-- PRODUCT GRID -->
+<div class="product-grid" id="product-grid">
+    @foreach (var p in Model.Products)
+    {
+        <div class="product-card">
+            <img src="@p.ImageUrl" alt="@p.Name" />
+            <h3>@p.Name</h3>
+
+            <p class="price">€@p.Price</p>
+
+            @if (p.Stock == 0)
+            {
+                <p class="stock out">Uitverkocht</p>
+            }
+            else if (p.Stock < 3)
+            {
+                <p class="stock low">Nog @p.Stock beschikbaar</p>
+            }
+            else
+            {
+                <p class="stock in">Op voorraad</p>
+            }
+
+            <a class="btn-card" href="/ProductDetail?id=@p.Id">Bekijk</a>
+        </div>
+    }
+</div>
+
+<script src="~/js/products.js"></script>
