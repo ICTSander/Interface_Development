@@ -5,23 +5,23 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Block4.Pages
 {
-    public class IndexModel : PageModel
+    public class ProductDetailModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly IProductRepository _productRepository;
 
-        public IList<Product> Products;
+        public required Product Product;
 
-        public IndexModel(ILogger<IndexModel> logger, IProductRepository productRepository)
+        public ProductDetailModel(ILogger<IndexModel> logger, IProductRepository productRepository)
         {
             _logger = logger;
             _productRepository = productRepository;
-            Products = new List<Product>();
+            Product = new Product();
         }
 
-        public void OnGet()
+        public void OnGet(int id)
         {
-            Products = _productRepository.GetAllProducts().ToList();
+            Product = _productRepository.GetProductById(id);
         }
     }
 }

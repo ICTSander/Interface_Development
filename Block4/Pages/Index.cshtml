@@ -7,3 +7,33 @@
 <div class="text-center">
     <h1 class="display-4">Denktank</h1>
 </div>
+
+<h2>Producten</h2>
+<div class="productcontainer" >
+    @foreach (var product in Model.Products)
+    {
+        <a asp-page="./ProductDetail" asp-route-id="@product.Id" class="product" style="background-color: rebeccapurple;">
+            <img src="~/img/placeholder.svg" style="width: 100%; object-fit: cover; border-radius: 25px 25px 0 0; padding-bottom: 10px; height: max-content;" />
+            <p>@product.Name</p>
+            <p>@product.Description</p>
+            <p>Price: €@product.Price</p>
+        </a>
+    }
+</div>
+
+<style>
+    .productcontainer {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-area: prod;
+    }
+    .product {
+        border-radius: 25px;
+        margin: 10px;
+    }
+    .product p {
+        margin: 0;
+        padding-left: 10px;
+        height: fit-content;
+    }
+</style>
