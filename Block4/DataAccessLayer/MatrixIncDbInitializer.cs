@@ -40,8 +40,8 @@ namespace DataAccessLayer
 
             var products = new Product[]
             {
-                new Product { Name = "Gearbox", Description = "System of rotating cog that change the speed, torque, and direction of a motor's power", Price = 10000.00m, Category = "Schepen", ImageUrl = "https://pinion.eu/wp-content/uploads/2021/05/Zahnraeder-2.png" },
-                new Product { Name = "Centrifugal Pumps", Description = " Device that convert rotational kinetic energy (usually from an electric motor) into hydrodynamic energy to move fluids.", Price = 500.50m, Category = "Meubels", ImageUrl = "https://www.northridgepumps.com/upload/editor/XSC-XVSC%20Horizontal%20and%20Vertical-26012011440501459.jpg" },
+                new Product { Name = "Gearbox", Description = "System of rotating cog that change the speed, torque, and direction of a motor's power", Price = 10000.00m, Category = "Gear", ImageUrl = "https://pinion.eu/wp-content/uploads/2021/05/Zahnraeder-2.png" },
+                new Product { Name = "Centrifugal Pumps", Description = " Device that convert rotational kinetic energy (usually from an electric motor) into hydrodynamic energy to move fluids.", Price = 500.50m, Category = "Motor", ImageUrl = "https://www.northridgepumps.com/upload/editor/XSC-XVSC%20Horizontal%20and%20Vertical-26012011440501459.jpg" },
                 new Product { Name = "EMP (Electro-Magnetic Pulse) Device", Description = "is a weapon or instrument that releases a sudden, powerful burst of electromagnetic energy. ", Price = 129.99m, Category = "Wapens", ImageUrl = "https://m.media-amazon.com/images/I/51VbEaKvoIL._AC_SL1500_.jpg" }
             };
             context.Products.AddRange(products);
