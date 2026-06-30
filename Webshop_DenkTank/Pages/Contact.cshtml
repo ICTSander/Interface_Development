@@ -1,0 +1,84 @@
+@page
+@model ContactModel
+@{
+    ViewData["Title"] = "Contact";
+}
+
+<div class="contact-container">
+    <div class="contact-header">
+        <h1>Neem contact op</h1>
+        <p>Heb je een vraag of opmerking? Wij helpen je graag verder.</p>
+    </div>
+
+    <div class="contact-grid">
+        <!-- CONTACTFORMULIER -->
+        <div class="contact-form-card">
+            @if (Model.Verzonden)
+            {
+                <div class="alert-success">
+                    Bedankt voor je bericht! We nemen binnen 2 werkdagen contact met je op.
+                </div>
+            }
+            else
+            {
+                <h2>Stuur ons een bericht</h2>
+                <form method="post">
+                    <div class="form-group">
+                        <label for="Naam">Naam</label>
+                        <input type="text" id="Naam" name="Naam" placeholder="Jouw naam" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Email">E-mailadres</label>
+                        <input type="email" id="Email" name="Email" placeholder="jouw@email.nl" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Onderwerp">Onderwerp</label>
+                        <select id="Onderwerp" name="Onderwerp">
+                            <option value="">-- Selecteer een onderwerp --</option>
+                            <option value="bestelling">Vraag over mijn bestelling</option>
+                            <option value="retour">Retour &amp; ruilen</option>
+                            <option value="product">Productvraag</option>
+                            <option value="overig">Overig</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Bericht">Bericht</label>
+                        <textarea id="Bericht" name="Bericht" rows="5" placeholder="Schrijf hier je bericht..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-auth">Versturen</button>
+                </form>
+            }
+        </div>
+
+        <!-- CONTACTINFORMATIE -->
+        <div class="contact-info">
+            <div class="contact-info-block">
+                <div class="contact-icon">📍</div>
+                <h3>Adres</h3>
+                <p>Nieuw Eyckholt 300<br />6419 DJ Heerlen<br />Nederland</p>
+            </div>
+
+            <div class="contact-info-block">
+                <div class="contact-icon">📞</div>
+                <h3>Telefoon</h3>
+                <p>+31 (0)45 400 60 60<br />Ma–Vr: 8:30 – 17:00</p>
+            </div>
+
+            <div class="contact-info-block">
+                <div class="contact-icon">✉️</div>
+                <h3>E-mail</h3>
+                <p>info@zuyd.nl</p>
+            </div>
+
+            <div class="contact-info-block">
+                <div class="contact-icon">⏱️</div>
+                <h3>Reactietijd</h3>
+                <p>Wij reageren binnen 2 werkdagen op jouw bericht.</p>
+            </div>
+        </div>
+    </div>
+</div>
