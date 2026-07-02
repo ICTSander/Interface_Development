@@ -1,0 +1,55 @@
+@page
+@model Webshop_DenkTank.Pages.CheckoutModel
+@{
+    ViewData["Title"] = "Afrekenen";
+}
+
+<h1>Afrekenen</h1>
+
+@if (Model.Items == null || !Model.Items.Any())
+{
+    <p>Je winkelwagen is leeg. Voeg eerst producten toe.</p>
+}
+else
+{
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Aantal</th>
+                <th>Prijs</th>
+                <th>Totaal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>€@item.Product.Price</td>
+                    <td>€@(item.Product.Price * item.Quantity)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p class="cart-total">Totaal: €@Model.Total</p>
+
+    <form method="post">
+        <div class="form-group">
+            <label for="Name">Naam</label>
+            <input id="Name" name="Name" value="@Model.Name" required />
+        </div>
+        <div class="form-group">
+            <label for="Address">Adres</label>
+            <input id="Address" name="Address" value="@Model.Address" required />
+        </div>
+        <div class="form-group">
+            <label for="Email">E-mail</label>
+            <input id="Email" name="Email" type="email" value="@Model.Email" required />
+        </div>
+
+        <button type="submit">Plaats bestelling</button>
+    </form>
+}

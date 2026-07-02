@@ -1,0 +1,70 @@
+@page
+@model Webshop_DenkTank.Pages.AccountModel
+@{
+    ViewData["Title"] = "Mijn account";
+}
+
+<h1>Mijn account</h1>
+
+@if (string.IsNullOrEmpty(Model.UserEmail))
+{
+    <p>Je bent niet ingelogd. <a href="/Login">Inloggen</a></p>
+}
+else
+{
+    <p>Welkom, <strong>@Model.UserEmail</strong></p>
+
+    <section class="account-info">
+        <h2>Accountgegevens</h2>
+        <div class="account-card">
+            <p><strong>E-mail:</strong> @Model.UserEmail</p>
+            <p><strong>Naam:</strong> Demo Gebruiker</p>
+            <p><strong>Adres:</strong> Voorbeeldstraat 1, 1000 AA</p>
+        </div>
+    </section>
+
+    <section class="orders">
+        <h2>Mijn bestellingen</h2>
+
+        @if (Model.Orders == null || !Model.Orders.Any())
+        {
+            <p>Je hebt nog geen bestellingen.</p>
+        }
+        else
+        {
+            <div class="orders-list">
+                @foreach (var order in Model.Orders)
+                {
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="order-number">Order: <strong>@order.OrderNumber</strong></div>
+                            <div class="order-date">@order.Date.ToString("dd-MM-yyyy")</div>
+                            <div class="order-status">
+                                <span class="status @order.Status.Replace(" ", "-").ToLowerInvariant()">@order.Status</span>
+                            </div>
+                        </div>
+
+                        <div class="order-items">
+                            @foreach (var it in order.Items)
+                            {
+                                <div class="order-item">
+                                    <img src="@it.Product.ImageUrl" alt="@it.Product.Name" />
+                                    <div class="item-info">
+                                        <div class="item-name">@it.Product.Name</div>
+                                        <div class="item-qty">Aantal: @it.Quantity</div>
+                                        <div class="item-price">€@it.Product.Price</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="order-footer">
+                            <div class="order-total">Totaal: €@order.Total</div>
+                            <a class="btn-card" href="/OrderDetails?number=@order.OrderNumber">Bekijk details</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+}

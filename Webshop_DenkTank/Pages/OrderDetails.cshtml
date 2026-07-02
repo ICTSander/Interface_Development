@@ -1,0 +1,49 @@
+@page
+@model Webshop_DenkTank.Pages.OrderDetailsModel
+@{
+    ViewData["Title"] = "Orderdetails";
+}
+
+<h1>Order @Model.Order?.OrderNumber</h1>
+
+@if (Model.Order == null)
+{
+    <p>Order niet gevonden.</p>
+}
+else
+{
+    <div class="order-detail">
+        <div class="order-summary">
+            <p>Datum: @Model.Order.Date.ToString("dd-MM-yyyy HH:mm")</p>
+            <p>Status: <span class="status @Model.Order.Status.ToLowerInvariant().Replace(" ", "-")">@Model.Order.Status</span></p>
+            <p>Totaal: €@Model.Order.Total</p>
+        </div>
+
+        <h3>Items</h3>
+        <div class="order-items">
+            @foreach (var it in Model.Order.Items)
+            {
+                <div class="order-item">
+                    <img src="@it.Product.ImageUrl" alt="@it.Product.Name" />
+                    <div>
+                        <div class="item-name">@it.Product.Name</div>
+                        <div class="item-qty">Aantal: @it.Quantity</div>
+                        <div class="item-price">€@it.Product.Price</div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <h3>Tracking / Geschiedenis</h3>
+        <ul class="order-history">
+            @foreach (var h in Model.Order.History.OrderByDescending(x => x.Timestamp))
+            {
+                <li>
+                    <div class="history-time">@h.Timestamp.ToString("dd-MM-yyyy HH:mm")</div>
+                    <div class="history-status">@h.Status</div>
+                    <div class="history-note">@h.Note</div>
+                </li>
+            }
+        </ul>
+    </div>
+}

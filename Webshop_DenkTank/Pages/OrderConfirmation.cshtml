@@ -1,0 +1,17 @@
+@page
+@model Webshop_DenkTank.Pages.OrderConfirmationModel
+@{
+    ViewData["Title"] = "Bestelling geplaatst";
+}
+
+<h1>Dankjewel voor je bestelling</h1>
+
+@if (!string.IsNullOrEmpty(Model.OrderNumber))
+{
+    <p>Beste @Model.OrderName,</p>
+    <p>We hebben je bestelling ontvangen. Ordernummer: <strong>@Model.OrderNumber</strong></p>
+    <p>Totaalbedrag: €@Model.OrderTotal</p>
+    <p>Je ontvangt een bevestiging per e-mail (simulatie).</p>
+}
+
+<a href="/">Terug naar de winkel</a>

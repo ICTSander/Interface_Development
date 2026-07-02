@@ -1,0 +1,49 @@
+@page
+@model Webshop_DenkTank.Pages.CartModel
+@{
+    ViewData["Title"] = "Winkelwagen";
+}
+
+<h1>Winkelwagen</h1>
+
+@if (Model.Items == null || !Model.Items.Any())
+{
+    <p>Je winkelwagen is leeg.</p>
+}
+else
+{
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Aantal</th>
+                <th>Prijs</th>
+                <th>Totaal</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>€@item.Product.Price</td>
+                    <td>€@(item.Product.Price * item.Quantity)</td>
+                    <td>
+                        <form method="post" asp-page-handler="Remove">
+                            <input type="hidden" name="productId" value="@item.Product.Id" />
+                            <button type="submit">Verwijder</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p class="cart-total">Totaal: €@Model.Total</p>
+
+    <form method="post" asp-page-handler="Checkout">
+        <button type="submit">Naar afrekenen</button>
+    </form>
+}

@@ -1,53 +1,84 @@
-﻿<!DOCTYPE html>
+﻿@using System.Text.Json
+@using Microsoft.AspNetCore.Http
+@{
+    int cartCount = 0;
+    var cartJson = Context.Session.GetString("cart");
+    if (!string.IsNullOrEmpty(cartJson))
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(cartJson);
+            foreach (var el in doc.RootElement.EnumerateArray())
+            {
+                if (el.TryGetProperty("Quantity", out var q))
+                {
+                    cartCount += q.GetInt32();
+                }
+            }
+        }
+        catch { cartCount = 0; }
+    }
+
+    var userEmail = Context.Session.GetString("user");
+}
+
+<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"] - Webshop</title>
+    <title>@ViewData["Title"] - Matrix Inc.</title>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 
 <body>
+    <div class="page-container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <a href="/">Matrix Inc.</a>
+                </div>
 
-    <!-- HEADER -->
-    <header class="header">
-        <div class="header-top">
-            <div class="logo">
-                <a href="/">DenkTank Webshop</a>
+                <div class="search-bar">
+                    <input type="text" placeholder="Zoeken..." />
+                </div>
+
+                <div class="actions">
+                    @if (!string.IsNullOrEmpty(userEmail))
+                    {
+                        <a href="/Account" class="account-link">Mijn account</a>
+                        <span class="user">Welkom, @userEmail</span>
+                        <a href="/Logout" class="logout-link">Uitloggen</a>
+                    }
+                    else
+                    {
+                        <a href="/Login" class="login-link">Inloggen</a>
+                    }
+
+                    <a href="/Cart" class="cart" aria-label="Winkelwagen">
+                        🛒 <span id="cart-count">@cartCount</span>
+                    </a>
+                </div>
             </div>
 
-            <div class="search-bar">
-                <input type="text" placeholder="Zoeken..." />
+            <nav class="category-nav">
+                <a href="/">Home</a>
+                <a href="/Products">Producten</a>
+            </nav>
+        </header>
+
+        <main class="content">
+            @RenderBody()
+        </main>
+
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="/Contact">Contact</a>
+                <a href="/Privacy">Privacybeleid</a>
             </div>
-
-            <div class="actions">
-                <a href="/Login" class="login-link">Inloggen</a>
-                <a href="/Cart" class="cart">
-                    🛒 <span id="cart-count">0</span>
-                </a>
-            </div>
-        </div>
-
-        <nav class="category-nav">
-            <a href="/Products?cat=dames">Dames</a>
-            <a href="/Products?cat=heren">Heren</a>
-            <a href="/Products?cat=kinderen">Kinderen</a>
-            <a href="/Products?cat=outlet">Outlet</a>
-            <a href="/Products?cat=nieuw">Nieuw</a>
-        </nav>
-    </header>
-
-    <main class="content">
-        @RenderBody()
-    </main>
-
-    <footer class="footer">
-        <div class="footer-links">
-            <a href="/Contact">Contact</a>
-            <a href="/Privacy">Privacybeleid</a>
-        </div>
-        <p>&copy; 2026 - DenkTank Webshop</p>
-    </footer>
-
+            <p>&copy; 2026 - Matrix Inc.</p>
+        </footer>
+    </div>
 </body>
 </html>

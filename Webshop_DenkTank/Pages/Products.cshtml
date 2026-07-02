@@ -9,6 +9,17 @@
 <!-- FILTERS -->
 <div class="filters">
     <input type="text" id="search" placeholder="Zoeken..." />
+    <!-- category select placed next to search -->
+    <select id="category-filter" onchange="location = this.value;">
+        <option value="/Products">Alle categorieën</option>
+        @foreach (var c in Model.Categories)
+        {
+            var value = "/Products?cat=" + c;
+            var selectedAttr = Model.SelectedCategory?.Equals(c, System.StringComparison.OrdinalIgnoreCase) == true ? " selected" : "";
+            @Html.Raw($"<option value=\"{value}\"{selectedAttr}>{c}</option>")
+        }
+    </select>
+
     <select id="sort">
         <option value="price-asc">Prijs: laag → hoog</option>
         <option value="price-desc">Prijs: hoog → laag</option>
@@ -20,25 +31,28 @@
     @foreach (var p in Model.Products)
     {
         <div class="product-card">
-            <img src="@p.ImageUrl" alt="@p.Name" />
+            <a href="/ProductDetail?id=@p.Id"><img src="@p.ImageUrl" alt="@p.Name" /></a>
             <h3>@p.Name</h3>
 
-            <p class="price">€@p.Price</p>
+            <div class="meta">
+                <p class="price">€@p.Price</p>
+                @if (p.Stock == 0)
+                {
+                    <p class="stock out">Uitverkocht</p>
+                }
+                else if (p.Stock < 3)
+                {
+                    <p class="stock low">Nog @p.Stock beschikbaar</p>
+                }
+                else
+                {
+                    <p class="stock in">Op voorraad</p>
+                }
+            </div>
 
-            @if (p.Stock == 0)
-            {
-                <p class="stock out">Uitverkocht</p>
-            }
-            else if (p.Stock < 3)
-            {
-                <p class="stock low">Nog @p.Stock beschikbaar</p>
-            }
-            else
-            {
-                <p class="stock in">Op voorraad</p>
-            }
-
-            <a class="btn-card" href="/ProductDetail?id=@p.Id">Bekijk</a>
+            <div class="card-actions">
+                <a class="btn-card" href="/ProductDetail?id=@p.Id">Bekijk</a>
+            </div>
         </div>
     }
 </div>

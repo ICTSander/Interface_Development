@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
 
 namespace Webshop_DenkTank.Pages
 {
@@ -26,6 +27,7 @@ namespace Webshop_DenkTank.Pages
             // Tijdelijke demo-login — vervangen door echte authenticatie
             if (Email == "demo@denktank.nl" && Password == "Demo1234!")
             {
+                HttpContext.Session.SetString("user", Email);
                 return RedirectToPage("/Index");
             }
 

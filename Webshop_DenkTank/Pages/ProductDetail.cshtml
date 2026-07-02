@@ -1,0 +1,67 @@
+@page
+@model Webshop_DenkTank.Pages.ProductDetailModel
+@{
+    ViewData["Title"] = "Product Detail";
+}
+
+<div class="product-detail">
+    <div class="product-image">
+        <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" />
+    </div>
+    <div class="product-info">
+        <h1>@Model.Product.Name</h1>
+        <p class="category">Categorie: @Model.Product.Category</p>
+        <p class="price">€@Model.Product.Price</p>
+        <p class="stock">@(
+            Model.Product.Stock == 0 ? "Uitverkocht" : Model.Product.Stock < 3 ? $"Nog {Model.Product.Stock} beschikbaar" : "Op voorraad"
+        )</p>
+
+        <p class="description">@Model.Product.Description</p>
+
+        <form id="addToCartForm" method="post" asp-page-handler="AddToCart">
+            <input type="hidden" name="id" value="@Model.Product.Id" />
+            <label for="quantity">Aantal:</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1" max="@Model.Product.Stock" />
+            <button type="submit" class="btn-primary" @(Model.Product.Stock == 0 ? "disabled" : "")>Toevoegen aan winkelwagen</button>
+        </form>
+
+        <form method="post" asp-page-handler="Order">
+            <input type="hidden" name="id" value="@Model.Product.Id" />
+            <input type="hidden" name="quantity" value="1" />
+            <button type="submit" class="btn-card" @(Model.Product.Stock == 0 ? "disabled" : "")>Bestellen</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('addToCartForm');
+        if (!form) return;
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var fd = new FormData(form);
+
+            fetch(form.action || window.location.href, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                body: fd
+            })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                if (data && data.success) {
+                    var el = document.getElementById('cart-count');
+                    if (el) el.textContent = data.count;
+                    // Simple feedback
+                    var btn = form.querySelector('button');
+                    var original = btn.textContent;
+                    btn.textContent = 'Toegevoegd ?';
+                    setTimeout(function () { btn.textContent = original; }, 1500);
+                } else {
+                    form.submit();
+                }
+            })
+            .catch(function () { form.submit(); });
+        });
+    });
+</script>

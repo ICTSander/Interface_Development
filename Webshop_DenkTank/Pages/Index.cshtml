@@ -7,8 +7,8 @@
 <!-- HERO BANNER -->
 <section class="hero">
     <div class="hero-content">
-        <h1>Premium Designer Collectie 2026</h1>
-        <p>Ontdek onze exclusieve nieuwe collectie — elegant, modern en tijdloos.</p>
+        <h1>Matrix Inc</h1>
+        <p>Al uw bouw benodigdheden op één plek</p>
         <a href="/Products" class="btn-hero">Bekijk Collectie</a>
     </div>
 </section>
@@ -17,29 +17,32 @@
 <section class="featured-section">
     <h2>Uitgelicht</h2>
 
-    <div class="featured-grid">
+    <div class="product-grid">
         @foreach (var p in Model.FeaturedProducts)
         {
-            <div class="featured-card">
-                <img src="@p.ImageUrl" alt="@p.Name" />
+            <div class="product-card">
+                <a href="/ProductDetail?id=@p.Id"><img src="@p.ImageUrl" alt="@p.Name" /></a>
                 <h3>@p.Name</h3>
 
-                <p class="price">€@p.Price</p>
+                <div class="meta">
+                    <p class="price">€@p.Price</p>
+                    @if (p.Stock == 0)
+                    {
+                        <p class="stock out">Uitverkocht</p>
+                    }
+                    else if (p.Stock < 3)
+                    {
+                        <p class="stock low">Nog @p.Stock beschikbaar</p>
+                    }
+                    else
+                    {
+                        <p class="stock in">Op voorraad</p>
+                    }
+                </div>
 
-                @if (p.Stock == 0)
-                {
-                    <p class="stock out">Uitverkocht</p>
-                }
-                else if (p.Stock < 3)
-                {
-                    <p class="stock low">Nog @p.Stock beschikbaar</p>
-                }
-                else
-                {
-                    <p class="stock in">Op voorraad</p>
-                }
-
-                <a href="/ProductDetail?id=@p.Id" class="btn-card">Bekijk</a>
+                <div class="card-actions">
+                    <a href="/ProductDetail?id=@p.Id" class="btn-card">Bekijk</a>
+                </div>
             </div>
         }
     </div>
