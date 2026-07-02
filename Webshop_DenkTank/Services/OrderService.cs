@@ -9,6 +9,7 @@ namespace Webshop_DenkTank.Services
     {
         private readonly ProductService _productService;
         private readonly List<Order> _orders = new();
+        private readonly object _lock = new();
 
         public OrderService(ProductService productService)
         {
@@ -83,6 +84,20 @@ namespace Webshop_DenkTank.Services
         public Order? GetOrder(string orderNumber)
         {
             return _orders.FirstOrDefault(o => string.Equals(o.OrderNumber, orderNumber, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public void AddOrder(Order order)
+        {
+            if (order == null) return;
+            if (string.IsNullOrWhiteSpace(order.OrderNumber))
+            {
+                order.OrderNumber = "ORD-" + Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+            }
+
+            lock (_lock)
+            {
+                _orders.Add(order);
+            }
         }
     }
 }

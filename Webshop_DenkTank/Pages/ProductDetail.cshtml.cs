@@ -12,13 +12,15 @@ namespace Webshop_DenkTank.Pages
     public class ProductDetailModel : PageModel
     {
         private readonly ProductService _service;
+        private readonly OrderService _orderService;
         private const string SessionKey = "cart";
 
         public Product Product { get; set; }
 
-        public ProductDetailModel(ProductService service)
+        public ProductDetailModel(ProductService service, OrderService orderService)
         {
             _service = service;
+            _orderService = orderService;
         }
 
         public IActionResult OnGet(int id)
@@ -60,7 +62,52 @@ namespace Webshop_DenkTank.Pages
 
         public IActionResult OnPostOrder(int id, int quantity)
         {
-            // Placeholder: simple redirect to checkout or order confirmation.
+            var product = _service.GetById(id);
+            if (product == null) return NotFound();
+
+            var userEmail = HttpContext.Session.GetString("user");
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                // Create order immediately for logged-in user
+                var orderNumber = System.Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+                var order = new Order
+                {
+                    OrderNumber = orderNumber,
+                    Date = System.DateTime.UtcNow,
+                    Status = "Besteld",
+                    UserEmail = userEmail,
+                    Items = new List<OrderItem> { new OrderItem { Product = product, Quantity = quantity } },
+                    History = new List<OrderHistoryItem>
+                    {
+                        new OrderHistoryItem { Timestamp = System.DateTime.UtcNow, Status = "Besteld", Note = "Directe aankoop via productpagina" }
+                    }
+                };
+
+                _orderService.AddOrder(order);
+
+                TempData["OrderNumber"] = orderNumber;
+                TempData["OrderTotal"] = order.Total.ToString("F2");
+                TempData["OrderName"] = userEmail;
+
+                return RedirectToPage("/OrderConfirmation");
+            }
+
+            // Not logged in: add to cart and redirect to checkout to complete order
+            var json = HttpContext.Session.GetString(SessionKey);
+            var list = string.IsNullOrEmpty(json) ? new List<CartItemDto>() : JsonSerializer.Deserialize<List<CartItemDto>>(json)!;
+
+            var existing = list.FirstOrDefault(i => i.ProductId == id);
+            if (existing != null)
+            {
+                existing.Quantity += quantity;
+            }
+            else
+            {
+                list.Add(new CartItemDto { ProductId = id, Quantity = quantity });
+            }
+
+            HttpContext.Session.SetString(SessionKey, JsonSerializer.Serialize(list));
+
             return RedirectToPage("/Checkout");
         }
 
